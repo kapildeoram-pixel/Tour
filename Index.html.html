@@ -2,23 +2,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Family Trip Bakkhali Planner</title>
+    <title>Family Trip Bakkhali - Planner & Budget</title>
     <style>
         :root {
-            --primary: #1e3a8a;
-            --secondary: #0284c7;
-            --bg: #f8fafc;
+            /* Light, cheerful travel palette */
+            --primary-color: #2c3e50;
+            --accent-blue: #3498db;
+            --accent-orange: #ff7f50;
+            --bg-color: #f0f7f4;
             --card-bg: #ffffff;
-            --text: #1e293b;
-            --border: #e2e8f0;
+            --text-color: #34495e;
+            
+            /* Day themes */
+            --day1-theme: #e8f4fd;
+            --day1-border: #3498db;
+            --day2-theme: #fef5e7;
+            --day2-border: #f39c12;
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            background-color: var(--bg);
-            color: var(--text);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            background-image: linear-gradient(135deg, #f0f7f4 0%, #e8f4fd 100%);
+            color: var(--text-color);
             margin: 0;
             padding: 20px;
+            min-height: 100vh;
         }
 
         .container {
@@ -26,122 +35,175 @@
             margin: 0 auto;
             background: var(--card-bg);
             padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+            border-radius: 16px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.06);
         }
 
         .header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-bottom: 2px solid var(--border);
+            border-bottom: 2px dashed #dcdde1;
             padding-bottom: 20px;
             margin-bottom: 25px;
         }
 
         h1 {
-            color: var(--primary);
             margin: 0;
-            font-size: 28px;
+            color: var(--primary-color);
+            font-size: 32px;
+            letter-spacing: -0.5px;
+        }
+        
+        h1 span {
+            color: var(--accent-orange);
         }
 
         .total-budget {
-            background: #f0fdf4;
-            color: #166534;
-            padding: 10px 20px;
-            border-radius: 8px;
+            font-size: 24px;
             font-weight: bold;
-            font-size: 20px;
-            border: 1px solid #bbf7d0;
+            color: #27ae60;
+            background: #e8f8f5;
+            padding: 10px 20px;
+            border-radius: 30px;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
+            border: 2px solid #a3e4d7;
         }
 
-        .actions-bar {
+        .btn-group {
+            margin-bottom: 25px;
             display: flex;
             gap: 10px;
-            margin-bottom: 20px;
         }
 
         .btn {
-            padding: 10px 20px;
+            padding: 14px 28px;
             border: none;
-            border-radius: 6px;
-            font-weight: 600;
+            border-radius: 8px;
             cursor: pointer;
-            transition: all 0.2s;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
+            font-weight: 600;
+            font-size: 15px;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 6px rgba(46, 204, 113, 0.2);
         }
 
-        .btn-primary { background-color: var(--secondary); color: white; }
-        .btn-primary:hover { background-color: #0369a1; }
-        .btn-success { background-color: #16a34a; color: white; }
-        .btn-success:hover { background-color: #15803d; }
-        .btn-danger { background-color: #ef4444; color: white; padding: 4px 8px; font-size: 12px;}
-        .btn-danger:hover { background-color: #dc2626; }
+        .btn-save-print { 
+            background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%); 
+            color: white; 
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(46, 204, 113, 0.3);
+        }
+        
+        .btn:active {
+            transform: translateY(0);
+        }
 
         .day-section {
-            margin-bottom: 35px;
-            border: 1px solid var(--border);
-            border-radius: 8px;
+            margin-bottom: 40px;
+            border-radius: 12px;
             overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.02);
+            border: 1px solid #e1e8ed;
         }
 
-        .day-header {
-            background-color: #f1f5f9;
-            padding: 15px;
-            font-weight: bold;
-            font-size: 18px;
+        .day-section.day1 { border-top: 4px solid var(--day1-border); }
+        .day-section.day2 { border-top: 4px solid var(--day2-border); }
+
+        .day-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--primary-color);
+            padding: 15px 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-bottom: 1px solid var(--border);
+        }
+        
+        .day1 .day-title { background-color: var(--day1-theme); }
+        .day2 .day-title { background-color: var(--day2-theme); }
+
+        .subtotal-badge {
+            font-size: 15px;
+            font-weight: 600;
+            background: rgba(255,255,255,0.7);
+            padding: 4px 12px;
+            border-radius: 20px;
+            color: #555;
+            border: 1px solid rgba(0,0,0,0.05);
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
-            text-align: left;
+            background: #ffffff;
         }
 
         th, td {
-            padding: 12px 15px;
-            border-bottom: 1px solid var(--border);
+            padding: 14px 20px;
+            text-align: left;
+            border-bottom: 1px solid #f1f2f6;
         }
 
         th {
-            background-color: #f8fafc;
-            color: #64748b;
+            background-color: #fafbfc;
+            color: #7f8c8d;
+            font-weight: 600;
             font-size: 13px;
             text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
-        input[type="text"], input[type="number"] {
-            width: 100%;
-            padding: 6px 10px;
-            border: 1px solid var(--border);
-            border-radius: 4px;
-            box-sizing: border-box;
-            font-size: 14px;
+        td[contenteditable="true"] {
+            outline: none;
+            transition: all 0.2s;
         }
 
-        input[type="text"]:focus, input[type="number"]:focus {
-            outline: 2px solid var(--secondary);
+        td[contenteditable="true"]:focus {
+            background-color: #fff9db !important;
+            box-shadow: inset 0 0 0 2px #f1c40f;
+        }
+        
+        tbody tr:nth-child(even) {
+            background-color: #fcfdfe;
         }
 
-        .col-time { width: 12%; }
-        .col-activity { width: 55%; }
-        .col-cost { width: 20%; }
-        .col-action { width: 8%; text-align: center; }
+        .cost-col {
+            width: 150px;
+            text-align: right;
+            font-weight: 500;
+        }
+        th.cost-col { text-align: right; }
+        
+        td.cost-input {
+            color: #2c3e50;
+        }
 
         @media print {
-            body { background: white; padding: 0; }
-            .container { box-shadow: none; padding: 0; max-width: 100%; }
-            .actions-bar, .col-action, .btn-danger, th:last-child, td:last-child { display: none !important; }
-            input { border: none !important; padding: 0 !important; background: transparent !important; pointer-events: none; }
-            .day-section { page-break-inside: avoid; border: 1px solid #000; margin-bottom: 20px; }
-            th { border-bottom: 2px solid #000; color: #000; }
-            td { border-bottom: 1px solid #ccc; }
+            body {
+                background: white;
+                color: black;
+                padding: 0;
+            }
+            .container {
+                box-shadow: none;
+                padding: 0;
+                max-width: 100%;
+            }
+            .btn-group {
+                display: none;
+            }
+            td[contenteditable="true"] {
+                background-color: transparent !important;
+            }
+            .day-title {
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+            .day1 .day-title { background-color: #e8f4fd !important; }
+            .day2 .day-title { background-color: #fef5e7 !important; }
         }
     </style>
 </head>
@@ -149,155 +211,151 @@
 
 <div class="container">
     <div class="header">
-        <h1>Family Trip Bakkhali</h1>
-        <div class="total-budget">Total Cost: ₹ <span id="grand-total">0</span></div>
+        <h1>Family Trip <span>Bakkhali</span> 🏖️</h1>
+        <div class="total-budget">Total Cost: ₹<span id="grand-total">11,100</span></div>
     </div>
 
-    <div class="actions-bar">
-        <button class="btn btn-success" onclick="saveAndPrint()">💾 Save & Print</button>
+    <div class="btn-group">
+        <button class="btn btn-save-print" onclick="saveAndPrint()">💾 Save Changes & Print</button>
     </div>
 
-    <div id="itinerary-container"></div>
+    <!-- DAY 1 -->
+    <div class="day-section day1" id="day1-section">
+        <div class="day-title">
+            <span>📅 15th August - Towards Bakkhali</span>
+            <span class="subtotal-badge">Subtotal: ₹<span id="day1-total">7,980</span></span>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th style="width: 130px;">Time</th>
+                    <th>Activity Description</th>
+                    <th class="cost-col">Cost (₹)</th>
+                </tr>
+            </thead>
+            <tbody id="day1-body">
+                <tr><td contenteditable="true">04:00 AM</td><td contenteditable="true">Home to Sealdah (2 Cabs)</td><td class="cost-col cost-input" contenteditable="true">1000</td></tr>
+                <tr><td contenteditable="true">06:00 AM</td><td contenteditable="true">Sealdah Station to Namkhana Station (Train)</td><td class="cost-col cost-input" contenteditable="true">200</td></tr>
+                <tr><td contenteditable="true">07:30 AM</td><td contenteditable="true">Snacks in Train</td><td class="cost-col cost-input" contenteditable="true">240</td></tr>
+                <tr><td contenteditable="true">09:00 AM</td><td contenteditable="true">Namkhana Station to Bakkhali (Auto)</td><td class="cost-col cost-input" contenteditable="true">320</td></tr>
+                <tr><td contenteditable="true">10:00 AM</td><td contenteditable="true">Hotel check in (3 rooms)</td><td class="cost-col cost-input" contenteditable="true">2700</td></tr>
+                <tr><td contenteditable="true">10:30 AM</td><td contenteditable="true">Breakfast</td><td class="cost-col cost-input" contenteditable="true">400</td></tr>
+                <tr><td contenteditable="true">11:30 AM</td><td contenteditable="true">Sea Beach bath</td><td class="cost-col cost-input" contenteditable="true">0</td></tr>
+                <tr><td contenteditable="true">02:00 PM</td><td contenteditable="true">Lunch</td><td class="cost-col cost-input" contenteditable="true">1200</td></tr>
+                <tr><td contenteditable="true">----</td><td contenteditable="true">Rest</td><td class="cost-col cost-input" contenteditable="true">0</td></tr>
+                <tr><td contenteditable="true">05:00 PM</td><td contenteditable="true">Sea Beach fish market</td><td class="cost-col cost-input" contenteditable="true">800</td></tr>
+                <tr><td contenteditable="true">07:00 PM</td><td contenteditable="true">Chai & tiffin</td><td class="cost-col cost-input" contenteditable="true">160</td></tr>
+                <tr><td contenteditable="true">09:00 PM</td><td contenteditable="true">Dinner</td><td class="cost-col cost-input" contenteditable="true">960</td></tr>
+                <tr><td contenteditable="true">----</td><td contenteditable="true">Rest</td><td class="cost-col cost-input" contenteditable="true">0</td></tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- DAY 2 -->
+    <div class="day-section day2" id="day2-section">
+        <div class="day-title">
+            <span>📅 16th August - Towards Home</span>
+            <span class="subtotal-badge">Subtotal: ₹<span id="day2-total">3,120</span></span>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th style="width: 130px;">Time</th>
+                    <th>Activity Description</th>
+                    <th class="cost-col">Cost (₹)</th>
+                </tr>
+            </thead>
+            <tbody id="day2-body">
+                <tr><td contenteditable="true">10:00 AM</td><td contenteditable="true">Breakfast</td><td class="cost-col cost-input" contenteditable="true">400</td></tr>
+                <tr><td contenteditable="true">11:00 AM</td><td contenteditable="true">Bath & get ready for check out</td><td class="cost-col cost-input" contenteditable="true">0</td></tr>
+                <tr><td contenteditable="true">11:30 AM</td><td contenteditable="true">Hotel check out</td><td class="cost-col cost-input" contenteditable="true">0</td></tr>
+                <tr><td contenteditable="true">12:00 PM</td><td contenteditable="true">Sea Beach shopping market (Individual)</td><td class="cost-col cost-input" contenteditable="true">0</td></tr>
+                <tr><td contenteditable="true">01:00 PM</td><td contenteditable="true">Lunch</td><td class="cost-col cost-input" contenteditable="true">1200</td></tr>
+                <tr><td contenteditable="true">02:00 PM</td><td contenteditable="true">Bakkhali to Namkhana Station</td><td class="cost-col cost-input" contenteditable="true">320</td></tr>
+                <tr><td contenteditable="true">04:00 PM</td><td contenteditable="true">Namkhana Station To Sealdah Station (Train)</td><td class="cost-col cost-input" contenteditable="true">200</td></tr>
+                <tr><td contenteditable="true">08:00 PM</td><td contenteditable="true">Sealdah Station to Home (2 Cabs)</td><td class="cost-col cost-input" contenteditable="true">1000</td></tr>
+            </tbody>
+        </table>
+    </div>
 </div>
 
 <script>
-    // Initial data structured directly from your uploaded Excel sheet
-    const defaultData = [
-        {
-            day: "15th August",
-            title: "Towards Bakkhali",
-            items: [
-                { time: "04:00:00", activity: "Home to Sealdah (2 Cabs)", cost: 1000 },
-                { time: "06:00:00", activity: "Sealdah Station to Namkhana Station (Train)", cost: 200 },
-                { time: "07:30:00", activity: "Snacks in Train", cost: 240 },
-                { time: "09:00:00", activity: "Namkhana Station to Bakkhali (Auto)", cost: 320 },
-                { time: "10:00:00", activity: "Hotel check in (3 rooms)", cost: 2700 },
-                { time: "10:30:00", activity: "Breakfast", cost: 400 },
-                { time: "11:30:00", activity: "Sea Beach bath", cost: 0 },
-                { time: "14:00:00", activity: "Lunch", cost: 1200 },
-                { time: "----", activity: "Rest", cost: 0 },
-                { time: "17:00:00", activity: "Sea Beach fish market", cost: 800 },
-                { time: "19:00:00", activity: "Chai & tiffin", cost: 160 },
-                { time: "21:00:00", activity: "Dinner", cost: 960 },
-                { time: "----", activity: "Rest", cost: 0 }
-            ]
-        },
-        {
-            day: "16th August",
-            title: "Towards Home",
-            items: [
-                { time: "10:00:00", activity: "Breakfast", cost: 400 },
-                { time: "11:00:00", activity: "Bath & get ready for check out", cost: 0 },
-                { time: "11:30:00", activity: "Hotel check out", cost: 0 },
-                { time: "12:00:00", activity: "Sea Beach shopping market (Individual)", cost: 0 },
-                { time: "13:00:00", activity: "Lunch", cost: 1200 },
-                { time: "14:00:00", activity: "Bakkhali to Namkhana Station", cost: 320 },
-                { time: "16:00:00", activity: "Namkhana Station To Sealdah Station (Train)", cost: 200 },
-                { time: "20:00:00", activity: "Sealdah Station to Home (2 Cabs)", cost: 1000 }
-            ]
-        }
-    ];
+    function updateTotals() {
+        let day1Total = 0;
+        let day2Total = 0;
 
-    // Load from LocalStorage if available, otherwise use initial data
-    let tripData = JSON.parse(localStorage.getItem('bakkhaliTripData')) || defaultData;
-
-    function renderTable() {
-        const container = document.getElementById('itinerary-container');
-        container.innerHTML = '';
-        let grandTotal = 0;
-
-        tripData.forEach((dayData, dayIndex) => {
-            let daySubtotal = 0;
-            
-            const daySection = document.createElement('div');
-            daySection.className = 'day-section';
-
-            let tableRows = '';
-            dayData.items.forEach((item, itemIndex) => {
-                daySubtotal += Number(item.cost) || 0;
-                tableRows += `
-                    <tr>
-                        <td class="col-time"><input type="text" value="${item.time}" onchange="updateItem(${dayIndex}, ${itemIndex}, 'time', this.value)"></td>
-                        <td class="col-activity"><input type="text" value="${item.activity}" onchange="updateItem(${dayIndex}, ${itemIndex}, 'activity', this.value)"></td>
-                        <td class="col-cost"><input type="number" value="${item.cost}" onchange="updateItem(${dayIndex}, ${itemIndex}, 'cost', this.value)"></td>
-                        <td class="col-action"><button class="btn btn-danger" onclick="deleteItem(${dayIndex}, ${itemIndex})">✕</button></td>
-                    </tr>
-                `;
-            });
-
-            grandTotal += daySubtotal;
-
-            daySection.innerHTML = `
-                <div class="day-header">
-                    <span>${dayData.day} - ${dayData.title}</span>
-                    <span style="font-size: 15px; color: #475569;">Est: ₹ ${daySubtotal}</span>
-                </div>
-                <table>
-                    <thead>
-                        <tr>
-                            <th class="col-time">Time</th>
-                            <th class="col-activity">Activity / Details</th>
-                            <th class="col-cost">Cost (₹)</th>
-                            <th class="col-action"></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        ${tableRows}
-                        <tr>
-                            <td colspan="4" style="padding: 10px 15px;">
-                                <button class="btn btn-primary" style="padding: 5px 12px; font-size: 13px;" onclick="addItem(${dayIndex})">+ Add Item</button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            `;
-            container.appendChild(daySection);
+        document.querySelectorAll('#day1-body .cost-input').forEach(cell => {
+            let val = parseFloat(cell.innerText.replace(/[^\d.-]/g, '')) || 0;
+            day1Total += val;
         });
 
-        document.getElementById('grand-total').innerText = grandTotal;
+        document.querySelectorAll('#day2-body .cost-input').forEach(cell => {
+            let val = parseFloat(cell.innerText.replace(/[^\d.-]/g, '')) || 0;
+            day2Total += val;
+        });
+
+        document.getElementById('day1-total').innerText = day1Total.toLocaleString('en-IN');
+        document.getElementById('day2-total').innerText = day2Total.toLocaleString('en-IN');
+        document.getElementById('grand-total').innerText = (day1Total + day2Total).toLocaleString('en-IN');
     }
 
-    function updateItem(dayIndex, itemIndex, field, value) {
-        if (field === 'cost') {
-            tripData[dayIndex].items[itemIndex][field] = Number(value) || 0;
-        } else {
-            tripData[dayIndex].items[itemIndex][field] = value;
-        }
-        saveDataSilently();
-        // Recalculate totals without full re-render to keep focus if editing costs
-        let grand = 0;
-        tripData.forEach(d => d.items.forEach(i => grand += (Number(i.cost) || 0)));
-        document.getElementById('grand-total').innerText = grand;
-    }
-
-    function addItem(dayIndex) {
-        tripData[dayIndex].items.push({ time: "12:00:00", activity: "New Activity", cost: 0 });
-        saveDataSilently();
-        renderTable();
-    }
-
-    function deleteItem(dayIndex, itemIndex) {
-        tripData[dayIndex].items.splice(itemIndex, 1);
-        saveDataSilently();
-        renderTable();
-    }
-
-    function saveDataSilently() {
-        localStorage.setItem('bakkhaliTripData', JSON.stringify(tripData));
-    }
+    document.querySelectorAll('.cost-input').forEach(cell => {
+        cell.addEventListener('input', updateTotals);
+    });
 
     function saveAndPrint() {
-        // Explicit save confirmation visual feedback
-        localStorage.setItem('bakkhaliTripData', JSON.stringify(tripData));
+        const data = {
+            day1: [],
+            day2: []
+        };
+
+        document.querySelectorAll('#day1-body tr').forEach(row => {
+            const cells = row.querySelectorAll('td');
+            data.day1.push({ time: cells[0].innerText, desc: cells[1].innerText, cost: cells[2].innerText });
+        });
+
+        document.querySelectorAll('#day2-body tr').forEach(row => {
+            const cells = row.querySelectorAll('td');
+            data.day2.push({ time: cells[0].innerText, desc: cells[1].innerText, cost: cells[2].innerText });
+        });
+
+        localStorage.setItem('bakkhali_trip_12h_data', JSON.stringify(data));
         
-        // Let UI settle momentarily before opening print view
         setTimeout(() => {
             window.print();
-        }, 250);
+        }, 150);
     }
 
-    // Initial load
-    renderTable();
+    function loadData() {
+        const storedData = localStorage.getItem('bakkhali_trip_12h_data');
+        if (!storedData) return;
+
+        const data = JSON.parse(storedData);
+        
+        const buildTable = (bodyId, rowsData) => {
+            const tbody = document.getElementById(bodyId);
+            tbody.innerHTML = '';
+            rowsData.forEach(item => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td contenteditable="true">${item.time}</td>
+                    <td contenteditable="true">${item.desc}</td>
+                    <td class="cost-col cost-input" contenteditable="true">${item.cost}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+        };
+
+        if(data.day1) buildTable('day1-body', data.day1);
+        if(data.day2) buildTable('day2-body', data.day2);
+        
+        document.querySelectorAll('.cost-input').forEach(cell => {
+            cell.addEventListener('input', updateTotals);
+        });
+        updateTotals();
+    }
+
+    window.onload = loadData;
 </script>
 
 </body>
