@@ -343,14 +343,36 @@
     }
 
     function saveAndWhatsApp() {
-        // Save data locally 
         const data = getTableData();
         localStorage.setItem('bakkhali_trip_12h_data', JSON.stringify(data));
 
-        // Open WhatsApp window popup directly without downloading a PDF
+        // Format a structured text report since WhatsApp links do not allow binary document uploads
+        let message = `*🏖️ FAMILY TRIP BAKKHALI BUDGET UPDATE*\n\n`;
+        
+        message += `*📅 Day 1 - 15th August*\n`;
+        data.day1.forEach(item => {
+            if(item.cost !== "0") {
+                message += `• ${item.time} - ${item.desc}: ₹${item.cost}\n`;
+            } else {
+                message += `• ${item.time} - ${item.desc}\n`;
+            }
+        });
+        message += `*Subtotal:* ₹${document.getElementById('day1-total').innerText}\n\n`;
+
+        message += `*📅 Day 2 - 16th August*\n`;
+        data.day2.forEach(item => {
+            if(item.cost !== "0") {
+                message += `• ${item.time} - ${item.desc}: ₹${item.cost}\n`;
+            } else {
+                message += `• ${item.time} - ${item.desc}\n`;
+            }
+        });
+        message += `*Subtotal:* ₹${document.getElementById('day2-total').innerText}\n\n`;
+        
+        message += `*💰 GRAND TOTAL: ₹${document.getElementById('grand-total').innerText}*`;
+
         const phoneNumber = "919163911923";
-        const textMessage = encodeURIComponent("Hello! The Family Trip Bakkhali data has been updated on the planner web page.");
-        const whatsappUrl = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${textMessage}`;
+        const whatsappUrl = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodeURIComponent(message)}`;
         
         window.open(whatsappUrl, '_blank');
     }
