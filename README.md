@@ -96,6 +96,11 @@
             color: white; 
         }
 
+        .btn-draft {
+            background: linear-gradient(135deg, #7f8c8d 0%, #95a5a6 100%);
+            color: white;
+        }
+
         .btn-whatsapp {
             background: linear-gradient(135deg, #25d366 0%, #128c7e 100%);
             color: white;
@@ -227,6 +232,7 @@
     <!-- Buttons -->
     <div class="btn-group" data-html2canvas-ignore="true">
         <button class="btn btn-save-print" onclick="saveAndPrint()">💾 Save Changes & Print</button>
+        <button class="btn btn-draft" onclick="saveDraft()">📝 Save as draft</button>
         <button class="btn btn-whatsapp" id="whatsapp-btn" onclick="saveAndWhatsApp()">💬 Save changes & WhatsApp</button>
     </div>
 
@@ -333,6 +339,12 @@
         return data;
     }
 
+    function saveDraft() {
+        const data = getTableData();
+        localStorage.setItem('bakkhali_trip_12h_data', JSON.stringify(data));
+        alert("Draft saved successfully! Your changes will stay when you open this page next time.");
+    }
+
     function saveAndPrint() {
         const data = getTableData();
         localStorage.setItem('bakkhali_trip_12h_data', JSON.stringify(data));
@@ -346,7 +358,6 @@
         const data = getTableData();
         localStorage.setItem('bakkhali_trip_12h_data', JSON.stringify(data));
 
-        // Format a structured text report since WhatsApp links do not allow binary document uploads
         let message = `*🏖️ FAMILY TRIP BAKKHALI BUDGET UPDATE*\n\n`;
         
         message += `*📅 Day 1 - 15th August*\n`;
