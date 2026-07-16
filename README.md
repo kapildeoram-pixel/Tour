@@ -76,6 +76,7 @@
         .btn-group {
             margin-bottom: 25px;
             display: flex;
+            flex-wrap: wrap;
             gap: 10px;
         }
 
@@ -95,8 +96,8 @@
             color: white; 
         }
 
-        .btn-send {
-            background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+        .btn-whatsapp {
+            background: linear-gradient(135deg, #25d366 0%, #128c7e 100%);
             color: white;
         }
 
@@ -226,7 +227,7 @@
     <!-- Buttons -->
     <div class="btn-group" data-html2canvas-ignore="true">
         <button class="btn btn-save-print" onclick="saveAndPrint()">💾 Save Changes & Print</button>
-        <button class="btn btn-send" id="send-btn" onclick="openGmailPopup()">📧 Send PDF to kapildeoram1998@gmail.com</button>
+        <button class="btn btn-whatsapp" id="whatsapp-btn" onclick="saveAndWhatsApp()">💬 Save changes & WhatsApp</button>
     </div>
 
     <!-- DAY 1 -->
@@ -341,20 +342,17 @@
         }, 150);
     }
 
-    function openGmailPopup() {
-        // Save table edits locally
+    function saveAndWhatsApp() {
+        // Save data locally 
         const data = getTableData();
         localStorage.setItem('bakkhali_trip_12h_data', JSON.stringify(data));
 
-        // URL configurations for Gmail Compose interface
-        const emailTo = "kapildeoram1998@gmail.com";
-        const subject = encodeURIComponent("Family Trip Bakkhali Budget Update");
-        const body = encodeURIComponent("Hello,\n\nHere are the updated trip details from the Bakkhali budget planner.");
+        // Open WhatsApp window popup directly without downloading a PDF
+        const phoneNumber = "919163911923";
+        const textMessage = encodeURIComponent("Hello! The Family Trip Bakkhali data has been updated on the planner web page.");
+        const whatsappUrl = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${textMessage}`;
         
-        const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${emailTo}&su=${subject}&body=${body}`;
-        
-        // Open Gmail window popup pre-addressed
-        window.open(gmailUrl, '_blank');
+        window.open(whatsappUrl, '_blank');
     }
 
     function loadData() {
