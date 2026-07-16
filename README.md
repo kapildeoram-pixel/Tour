@@ -3,6 +3,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Family Trip Bakkhali - Planner & Budget</title>
+    <!-- html2pdf.js for converting HTML to PDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    
     <style>
         :root {
             /* Light, cheerful travel palette */
@@ -84,7 +87,7 @@
             font-weight: 600;
             font-size: 15px;
             transition: all 0.2s ease;
-            box-shadow: 0 4px 6px rgba(46, 204, 113, 0.2);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
         }
 
         .btn-save-print { 
@@ -92,9 +95,14 @@
             color: white; 
         }
 
+        .btn-send {
+            background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+            color: white;
+        }
+
         .btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 12px rgba(46, 204, 113, 0.3);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
         }
         
         .btn:active {
@@ -209,14 +217,16 @@
 </head>
 <body>
 
-<div class="container">
+<div class="container" id="planner-content">
     <div class="header">
         <h1>Family Trip <span>Bakkhali</span> 🏖️</h1>
         <div class="total-budget">Total Cost: ₹<span id="grand-total">11,100</span></div>
     </div>
 
-    <div class="btn-group">
+    <!-- Buttons -->
+    <div class="btn-group" data-html2canvas-ignore="true">
         <button class="btn btn-save-print" onclick="saveAndPrint()">💾 Save Changes & Print</button>
+        <button class="btn btn-send" id="send-btn" onclick="openGmailAndDownloadPDF()">📧 Send PDF to kapildeoram1998@gmail.com</button>
     </div>
 
     <!-- DAY 1 -->
@@ -303,7 +313,7 @@
         cell.addEventListener('input', updateTotals);
     });
 
-    function saveAndPrint() {
+    function getTableData() {
         const data = {
             day1: [],
             day2: []
@@ -319,11 +329,43 @@
             data.day2.push({ time: cells[0].innerText, desc: cells[1].innerText, cost: cells[2].innerText });
         });
 
+        return data;
+    }
+
+    function saveAndPrint() {
+        const data = getTableData();
         localStorage.setItem('bakkhali_trip_12h_data', JSON.stringify(data));
         
         setTimeout(() => {
             window.print();
         }, 150);
+    }
+
+    function openGmailAndDownloadPDF() {
+        // Save table edits locally first
+        const data = getTableData();
+        localStorage.setItem('bakkhali_trip_12h_data', JSON.stringify(data));
+
+        const element = document.getElementById('planner-content');
+        const opt = {
+            margin:       10,
+            filename:     'Bakkhali_Trip_Budget.pdf',
+            image:        { type: 'jpeg', quality: 0.98 },
+            html2canvas:  { scale: 2, useCORS: true },
+            jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+        };
+
+        // 1. Generate and instantly trigger download for the updated PDF
+        html2pdf().set(opt).from(element).save();
+
+        // 2. Open a popup compose window directly inside Gmail addressed to your recipient
+        const emailTo = "kapildeoram1998@gmail.com";
+        const subject = encodeURIComponent("Updated Family Trip Bakkhali Budget");
+        const body = encodeURIComponent("Hello,\n\nPlease find the downloaded trip planner PDF attached to this message.");
+        
+        const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${emailTo}&su=${subject}&body=${body}`;
+        
+        window.open(gmailUrl, '_blank');
     }
 
     function loadData() {
