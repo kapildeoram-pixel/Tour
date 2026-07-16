@@ -226,7 +226,7 @@
     <!-- Buttons -->
     <div class="btn-group" data-html2canvas-ignore="true">
         <button class="btn btn-save-print" onclick="saveAndPrint()">💾 Save Changes & Print</button>
-        <button class="btn btn-send" id="send-btn" onclick="openGmailAndDownloadPDF()">📧 Send PDF to kapildeoram1998@gmail.com</button>
+        <button class="btn btn-send" id="send-btn" onclick="openGmailPopup()">📧 Send PDF to kapildeoram1998@gmail.com</button>
     </div>
 
     <!-- DAY 1 -->
@@ -341,30 +341,19 @@
         }, 150);
     }
 
-    function openGmailAndDownloadPDF() {
-        // Save table edits locally first
+    function openGmailPopup() {
+        // Save table edits locally
         const data = getTableData();
         localStorage.setItem('bakkhali_trip_12h_data', JSON.stringify(data));
 
-        const element = document.getElementById('planner-content');
-        const opt = {
-            margin:       10,
-            filename:     'Bakkhali_Trip_Budget.pdf',
-            image:        { type: 'jpeg', quality: 0.98 },
-            html2canvas:  { scale: 2, useCORS: true },
-            jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
-        };
-
-        // 1. Generate and instantly trigger download for the updated PDF
-        html2pdf().set(opt).from(element).save();
-
-        // 2. Open a popup compose window directly inside Gmail addressed to your recipient
+        // URL configurations for Gmail Compose interface
         const emailTo = "kapildeoram1998@gmail.com";
-        const subject = encodeURIComponent("Updated Family Trip Bakkhali Budget");
-        const body = encodeURIComponent("Hello,\n\nPlease find the downloaded trip planner PDF attached to this message.");
+        const subject = encodeURIComponent("Family Trip Bakkhali Budget Update");
+        const body = encodeURIComponent("Hello,\n\nHere are the updated trip details from the Bakkhali budget planner.");
         
         const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${emailTo}&su=${subject}&body=${body}`;
         
+        // Open Gmail window popup pre-addressed
         window.open(gmailUrl, '_blank');
     }
 
